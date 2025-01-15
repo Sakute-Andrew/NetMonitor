@@ -8,8 +8,12 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="exception\" />
       <Folder Include="logger\" />
+      <Folder Include="wrapper\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="SharpPcap" Version="6.3.0" />
     </ItemGroup>
 
 </Project>
