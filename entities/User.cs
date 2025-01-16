@@ -1,3 +1,4 @@
+
 namespace NetMonitor.entities;
 
 public class User
@@ -7,6 +8,8 @@ public class User
     public String password { get; set; }
     public Role? role { get; set; }
 
+    public readonly string filePath = @"Data\\users.json";
+
     public User(String name, String email, String password, Role? role)
     {
         this.name = name;
@@ -14,8 +17,13 @@ public class User
         this.password = password;
         this.role = role;
     }
+
+    public User()
+    {
+        
+    }
     
-    private string isCorrectPassword(string password)
+    public string isCorrectPassword(string password)
     {
         List<string> errors = new();
 
@@ -38,7 +46,7 @@ public class User
         return password;
     }
 
-    private string isCorrectEmail(string email)
+    public string isCorrectEmail(string email)
     {
         List<string> errors = new();
         
@@ -66,7 +74,7 @@ public class User
         return email;
     }
 
-    private string isCorrectUsername(string username)
+    public string isCorrectUsername(string username)
     {
         List<string> errors = new();
         
@@ -85,9 +93,63 @@ public class User
         return username;
     }
     
-    public string toString()
+    public string serializeToJson()
     {
-        return $"User: {name}, {email}, {role}";
+        return "{\n" +
+               "\"name\": \"" + name + "\",\n" +
+               "\"email\": \"" + email + "\",\n" +
+               "\"password\": \"" + password + "\",\n" +
+               "\"role\": \"" + role + "\",\n" +
+               "},";
+    }
+
+    public List<User> deserializeFromJson(string json)
+    {
+        List<User> users = new List<User>();
+        string[] lines = json.Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
+
+        User currentUser = null;
+        foreach (var line in lines)
+        {
+            string trimmed = line.Trim();
+            if (trimmed.StartsWith("{"))
+            {
+                currentUser = new User();
+            }
+            else if (trimmed.StartsWith("}"))
+            {
+                if (currentUser != null)
+                {
+                    users.Add(currentUser);
+                }
+            }
+            else if (currentUser != null)
+            {
+                string[] keyValue = trimmed.Split(new[] { ':' }, 2, StringSplitOptions.RemoveEmptyEntries);
+                if (keyValue.Length == 2)
+                {
+                    string key = keyValue[0].Trim(' ', '"');
+                    string value = keyValue[1].Trim(' ', '"', ',');
+
+                    switch (key)
+                    {
+                        case "name":
+                            currentUser.name = value;
+                            break;
+                        case "email":
+                            currentUser.email = value;
+                            break;
+                        case "password":
+                            currentUser.password = value;
+                            break;
+                        case "role":
+                            currentUser.role = role;
+                            break;
+                    }
+                }
+            }
+        }
+        return users;
     }
     
 }
