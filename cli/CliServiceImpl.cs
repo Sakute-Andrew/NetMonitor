@@ -11,8 +11,17 @@ public class CliServiceImpl : CliService
         "Welcome to NetMonitor\n" +
         "1.Log in \n" +
         "2.Register\n" +
-        "3.Unregister\n" +
-        "4.See preferences\n" +
+        "3.See info\n" +
+        "4.Exit"
+    };
+    
+    private readonly string[] authorizedMenu = new[]
+    {
+        "Welcome to NetMonitor\n" +
+        "1.Log out \n" +
+        "2.See available network devices\n" +
+        "3.See TcpDump\n" +
+        "4.See network speed\n" +
         "5.Exit"
     };
     
@@ -38,12 +47,7 @@ public class CliServiceImpl : CliService
         Environment.Exit(0);
     }
 
-    public void showTable()
-    {
-        throw new NotImplementedException();
-    }
-
-    public void showView()
+    public void initAuthorisedMenu()
     {
         throw new NotImplementedException();
     }

@@ -4,7 +4,5 @@ public interface CliService
 {
     void initMenu();
 
-    void showTable();
-    
-    void showView();
+    void initAuthorisedMenu();
 }

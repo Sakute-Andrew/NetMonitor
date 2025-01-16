@@ -2,6 +2,8 @@ namespace NetMonitor.service;
 
 public class AuthServiceImpl : AuthService
 {
+    private Boolean isLoggedIn { get; set; }
+
     public void Login(string username, string password)
     {
         throw new NotImplementedException();
@@ -14,12 +16,12 @@ public class AuthServiceImpl : AuthService
 
     public void Logout()
     {
-        throw new NotImplementedException();
+        isLoggedIn = false;
     }
 
     public bool IsLoggedIn()
     {
-        throw new NotImplementedException();
+       return isLoggedIn;
     }
     
 }

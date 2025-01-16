@@ -4,6 +4,12 @@ namespace NetMonitor.cli.handle_menu;
 
 public class MenuService
 {
+    private AuthService authService;
+
+    public MenuService()
+    {
+        authService = new AuthServiceImpl();
+    }
     public void handleMenu(int menuChoice)
     {
         switch (menuChoice)
@@ -18,7 +24,6 @@ public class MenuService
                 info();
                 break;
             case 4:
-                handling();
                 break;
         }
         
@@ -26,12 +31,7 @@ public class MenuService
 
     private void authorization()
     {
-        Console.WriteLine("Authorization\n Enter your username:");
-        string username = Console.ReadLine();
-        Console.WriteLine("Enter your email:");
-        string email = Console.ReadLine();
-        Console.WriteLine("Enter your password:");
-        string password = Console.ReadLine();
+        
         
     }
 
@@ -45,12 +45,13 @@ public class MenuService
         
     }
 
-    private void handling()
+    private void printInfo()
     {
         
     }
+    
 
-    private void getInfo()
+    private string[] getInfo()
     {
         string username = Console.ReadLine();
         Console.WriteLine("Enter your email:");
@@ -58,5 +59,6 @@ public class MenuService
         Console.WriteLine("Enter your password:");
         string password = Console.ReadLine();
         
+        return new string[] { username, email, password };
     }
 }

@@ -7,7 +7,7 @@ public class User
     public String password { get; set; }
     public Role? role { get; set; }
 
-    public User(String name, String email, String password)
+    public User(String name, String email, String password, Role? role)
     {
         this.name = name;
         this.email = email;
