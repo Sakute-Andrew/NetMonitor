@@ -1,4 +1,6 @@
 
+using System.Text.RegularExpressions;
+
 namespace NetMonitor.entities;
 
 public class User
@@ -35,7 +37,7 @@ public class User
         {
             errors.Add("Помилка: розмір логіна повинен бути від 2 до 18 символів.");
         }
-        if (!password.All(c => char.IsLetterOrDigit(c) || c == '_' || c == '@'))
+        if (!Regex.IsMatch(password, @"^[a-zA-Z0-9_@!#$%&'*+\-/=?^^{|}~]+$"))
         {
             errors.Add("Помилка: лише латинські символи, цифри та символи _ або @.");
         }
@@ -85,10 +87,6 @@ public class User
         if (username.Length < 3 || username.Length > 20)
         {
             errors.Add("Помилка: емейл повинен бути довжиною від 5 до 50 символів.");
-        }
-        if (!(email.Contains('@') && email.Contains('.')))
-        {
-            errors.Add("Помилка: емейл має містити символи '@' та '.'.");
         }
         return username;
     }

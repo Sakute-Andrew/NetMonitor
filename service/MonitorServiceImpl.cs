@@ -1,4 +1,5 @@
-﻿using SharpPcap;
+﻿using NetMonitor.repo;
+using SharpPcap;
 using SharpPcap.LibPcap;
 using SharpPcap.Statistics;
 
@@ -11,11 +12,14 @@ public class MonitorServiceImpl : MonitorService
 
     static ulong oldSec = 0;
     static ulong oldUsec = 0;
+    
+    
 
     public MonitorServiceImpl()
     {
         devices = LibPcapLiveDeviceList.Instance;
     }
+
 
     public void showDevices()
     {
@@ -58,7 +62,7 @@ public class MonitorServiceImpl : MonitorService
         Console.WriteLine();
         Console.WriteLine("-- Отримую дані від \"{0}\", нажміть будь яку клавішу для зупинки...",
             device.Description);
-
+        
         // Start the capturing process
         device.StartCapture();
 
@@ -101,9 +105,15 @@ public class MonitorServiceImpl : MonitorService
         Console.WriteLine
         ("-- Прослуховую {0}, нажміть 'Ctrl + C' для зупинки...",
             device.Description);
-
+        
         // Start capture 'INFINTE' number of packets
-        device.Capture();
+        device.StartCapture();
+        
+        
+        Console.ReadLine();
+        Console.WriteLine("Прослуховування завершено, кількість з'єднань: " + device.Statistics.ReceivedPackets);
+        device.StopCapture();
+        return;
     }
 
     private static void device_OnPcapStatistics(object sender, StatisticsEventArgs e)
@@ -122,7 +132,7 @@ public class MonitorServiceImpl : MonitorService
         var ts = e.Timeval.Date.ToLongTimeString();
 
         // Print Statistics
-        Console.WriteLine("[Час - {0}]: Бітів в секунду: [{1}], Пакетів в секунду: [{2}]", ts, bps, pps);
+        Console.WriteLine("[Час - {0}]: Бітів: [{1}], Пакетів: [{2}]", ts, bps, pps);
 
         //store current timestamp
         oldSec = e.Timeval.Seconds;
@@ -146,7 +156,8 @@ public class MonitorServiceImpl : MonitorService
             int srcPort = tcpPacket.SourcePort;
             int dstPort = tcpPacket.DestinationPort;
 
-            Console.WriteLine("{0}:{1}:{2},{3} Len={4} {5}:{6} -> {7}:{8}",
+            
+            Console.WriteLine("{0}:{1}:{2},{3} Byte={4} From {5}:{6} -> To {7}:{8}",
                 time.Hour, time.Minute, time.Second, time.Millisecond, len,
                 srcIp, srcPort, dstIp, dstPort);
         }

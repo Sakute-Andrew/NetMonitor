@@ -1,4 +1,6 @@
+using System.Runtime.InteropServices.JavaScript;
 using NetMonitor.entities;
+using NetMonitor.hash;
 using NetMonitor.repo;
 
 namespace NetMonitor.service;
@@ -22,24 +24,16 @@ public class AuthServiceImpl : AuthService
         return users;
     }
 
-    public void Login(string email, string password)
+    public void Login(string username, string password)
     {
         // Десеріалізуємо список користувачів з JSON
         List<User> users = GetUsers();
     
         // Знаходимо користувача за email
-        User user = users.FirstOrDefault(u => u.email == email);
-
-        // Перевіряємо, чи знайдено користувача
-        if (user == null)
-        {
-            isLoggedIn = false;
-            Console.WriteLine("Такого користувача не існує");
-            return;
-        }
+        User user = users.FirstOrDefault(u => u.name == username);
 
         // Перевіряємо пароль
-        if (user.password == password)
+        if (user.password == Hash.HashCode(password))
         {
             loggedUser = user;
             isLoggedIn = true;
@@ -65,10 +59,40 @@ public class AuthServiceImpl : AuthService
         {
             Console.WriteLine("Користувача з таким ім'ям вже існує");
             isLoggedIn = false;
+            return;
         }
-        repoService.addData(user.serializeToJson(), user.email);
+        user.password = Hash.HashCode(password);
+        user.email = email;
+        user.name = username;
+        user.role = Role.USER;
+        repoService.addData(user.serializeToJson(), user.filePath);
+        isLoggedIn = true;
         
     }
+
+    public Boolean IsEmailExist(string email)
+    {
+        List<User> users = GetUsers();
+        User user = users.FirstOrDefault(u => u.email == email);
+        if (user == null)
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    public Boolean IsUsernameExist(string username)
+    {
+        List<User> users = GetUsers();
+        User user = users.FirstOrDefault(u => u.name == username);
+        if (user == null)
+        {
+            return false;
+        }
+        return true;
+    }
+    
 
     public void Logout()
     {
