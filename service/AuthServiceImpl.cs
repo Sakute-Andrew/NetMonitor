@@ -37,7 +37,7 @@ public class AuthServiceImpl : AuthService
         {
             loggedUser = user;
             isLoggedIn = true;
-            Console.WriteLine("Ви успішно увійшли!");
+            Console.WriteLine("Ви успiшно увiйшли!");
         }
         else
         {
@@ -50,14 +50,25 @@ public class AuthServiceImpl : AuthService
     public void Register(string email,string username, string password)
     {
         User user = new User();
-        user.isCorrectEmail(email);
-        user.isCorrectUsername(username);
-        user.isCorrectPassword(password);
+        try
+        {
+            user.isCorrectEmail(email);
+            user.isCorrectUsername(username);
+            user.isCorrectPassword(password);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Помилка: {e.Message}");
+            Console.WriteLine("Натиснiть Enter для продовження...");
+            Console.ReadLine();
+            return;
+        }
+        
         
         List<User> users = GetUsers();
         if (users.Any(u => u.email == email))
         {
-            Console.WriteLine("Користувача з таким ім'ям вже існує");
+            Console.WriteLine("Користувач з таким iм'ям вже iснує");
             isLoggedIn = false;
             return;
         }
@@ -67,6 +78,8 @@ public class AuthServiceImpl : AuthService
         user.role = Role.USER;
         repoService.addData(user.serializeToJson(), user.filePath);
         isLoggedIn = true;
+        Console.WriteLine("Нажмiть Enter щоб продовжити");
+        Console.ReadLine();
         
     }
 

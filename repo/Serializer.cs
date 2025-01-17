@@ -14,7 +14,7 @@ public class Serializer : RepoService
 
     public void removeData(string data, string pathValue)
     {
-        fileExists(pathValue);
+        
     }
 
     public string readData(string pathValue)
@@ -35,7 +35,8 @@ public class Serializer : RepoService
         }
         if (!File.Exists(fileName))
         {
-            File.Create(fileName);
+            using var fileStream = File.Create(fileName);
+            fileStream.Close();
             Console.WriteLine("File " + fileName + " created.");
         }
     }

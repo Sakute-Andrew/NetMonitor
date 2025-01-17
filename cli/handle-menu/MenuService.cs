@@ -7,7 +7,15 @@ public class MenuService
     private AuthService authService;
     private CliService cliService;
     
-
+    public readonly string[] info = new[]
+    {
+        "Ласкаво просимо до NetMonitor!\n" +
+        "Ця програма створена для монiторингу мережевого трафiку вашого пристрою.\n" +
+        "Вона дозволяє:\n" +
+        "  - Переглядати доступнi мережевi пристрої на комп'ютерi.\n" +
+        "  - Відстежувати мережевий трафiк у режимi реального часу за допомогою tcpdump.\n" +
+        "  - Аналізувати кількість i розмiр мережевих пакетiв.\n" 
+    };
     public MenuService()
     {
         authService = new AuthServiceImpl();
@@ -24,7 +32,7 @@ public class MenuService
                 registration();
                 break;
             case 3:
-                info();
+                infoPrint();
                 break;
             
         }
@@ -57,14 +65,15 @@ public class MenuService
         string[] userInput = getInfo();
         authService.Register(userInput[0],userInput[1], userInput[2]);
         if (authService.IsLoggedIn())
+           
         {
             authMenu();
         }
     }
 
-    private void info()
+    private void infoPrint()
     {
-        
+        Console.WriteLine(info.FirstOrDefault());
     }
 
     private void authMenu()
@@ -74,11 +83,11 @@ public class MenuService
 
     private string[] getInfo()
     {
-        Console.WriteLine("Enter user name: ");
+        Console.WriteLine("Введiть iм'я: ");
         string username = Console.ReadLine();
-        Console.WriteLine("Enter your email:");
+        Console.WriteLine("Введiть електронну пошту:");
         string email = Console.ReadLine();
-        Console.WriteLine("Enter your password:");
+        Console.WriteLine("Введiть пароль:");
         string password = Console.ReadLine();
         
         return new string[] { email, username, password };

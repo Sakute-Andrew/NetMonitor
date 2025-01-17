@@ -13,8 +13,11 @@ static class MainClass{
     
     public static void Main(string[] args)
     {
+       
+
         CliService service = new CliServiceImpl();
         service.initMenu();
+
     }
     
 }

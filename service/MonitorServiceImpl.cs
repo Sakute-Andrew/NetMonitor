@@ -29,7 +29,7 @@ public class MonitorServiceImpl : MonitorService
             throw new Exception("Пристрої не знайдено");
         }
 
-        Console.WriteLine("\nНа цьому комп'ютері наявні наступні пристрої:");
+        Console.WriteLine("\nНа цьому комп'ютерi наявнi наступнi пристрої:");
         Console.WriteLine("----------------------------------------------------\n");
 
         string output = "";
@@ -44,11 +44,18 @@ public class MonitorServiceImpl : MonitorService
 
     public void showPackageSpeed()
     {
+        try
+        {
         showDevices();
+        
         Console.WriteLine();
-        Console.Write("---- Будь ласка, оберіть пристрій який бажаєте прослуховувати: ");
+        Console.Write("---- Будь ласка, оберiть пристрiй який бажаєте прослуховувати: ");
         int i = int.Parse(Console.ReadLine());
-
+        
+            var description = devices[i].Description;
+        
+        
+        
         using var device = new StatisticsDevice(devices[i].Interface);
 
         device.OnPcapStatistics += device_OnPcapStatistics;
@@ -60,7 +67,7 @@ public class MonitorServiceImpl : MonitorService
         device.Filter = "tcp";
 
         Console.WriteLine();
-        Console.WriteLine("-- Отримую дані від \"{0}\", нажміть будь яку клавішу для зупинки...",
+        Console.WriteLine("-- Отримую данi вiд \"{0}\", нажмiть будь яку клавiшу для зупинки...",
             device.Description);
         
         // Start the capturing process
@@ -75,17 +82,29 @@ public class MonitorServiceImpl : MonitorService
         // Print out the device statistics
         Console.WriteLine(device.Statistics.ToString());
 
-        Console.WriteLine("Запис закінчено, пристрій відключено.");
+        Console.WriteLine("Запис закiнчено, пристрiй вiдключено.");
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Непередбачена помилка: {e.Message}");
+            Console.WriteLine("Натиснiть Enter для продовження...");
+            Console.ReadLine();
+        }
     }
 
     public void showTcpIpTraffic()
     {
+        try
+        {
         showDevices();
         Console.WriteLine();
-        Console.Write("---- Будь ласка, оберіть пристрій який бажаєте прослуховувати: ");
+        Console.Write("---- Будь ласка, оберiть пристрiй який бажаєте прослуховувати: ");
         int i = int.Parse(Console.ReadLine());
 
-        using var device = devices[i];
+        
+            using var device = devices[i];
+        
+        
 
         //Register our handler function to the 'packet arrival' event
         device.OnPacketArrival += device_OnPacketArrival;
@@ -100,10 +119,10 @@ public class MonitorServiceImpl : MonitorService
 
         Console.WriteLine();
         Console.WriteLine
-        ("-- Наступний фільтр tcpdump буде застосовано: \"{0}\"",
+        ("-- Наступний фiльтр tcpdump буде застосовано: \"{0}\"",
             filter);
         Console.WriteLine
-        ("-- Прослуховую {0}, нажміть 'Ctrl + C' для зупинки...",
+        ("-- Прослуховую {0}, нажмiть 'Enter' для зупинки...",
             device.Description);
         
         // Start capture 'INFINTE' number of packets
@@ -111,9 +130,15 @@ public class MonitorServiceImpl : MonitorService
         
         
         Console.ReadLine();
-        Console.WriteLine("Прослуховування завершено, кількість з'єднань: " + device.Statistics.ReceivedPackets);
+        Console.WriteLine("Прослуховування завершено, кiлькiсть з'єднань: " + device.Statistics.ReceivedPackets);
         device.StopCapture();
-        return;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Непередбачена помилка: {e.Message}");
+            Console.WriteLine("Натиснiть Enter для продовження...");
+            Console.ReadLine();
+        }
     }
 
     private static void device_OnPcapStatistics(object sender, StatisticsEventArgs e)
@@ -132,7 +157,7 @@ public class MonitorServiceImpl : MonitorService
         var ts = e.Timeval.Date.ToLongTimeString();
 
         // Print Statistics
-        Console.WriteLine("[Час - {0}]: Бітів: [{1}], Пакетів: [{2}]", ts, bps, pps);
+        Console.WriteLine("[Час - {0}]: Бiтiв: [{1}], Пакетiв: [{2}]", ts, bps, pps);
 
         //store current timestamp
         oldSec = e.Timeval.Seconds;

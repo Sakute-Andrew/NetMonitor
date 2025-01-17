@@ -9,11 +9,11 @@ public class CliServiceImpl : CliService
     private readonly string[] menu = new[]
     {
         "---                                      ---\n" +
-        "============= Вітаємо в NetMonitor ===========\n"+
+        "============= Вiтаємо в NetMonitor ===========\n"+
         "              1.Авторизуватись \n" +
         "              2.Зареєструватись\n" +
-        "              3.Інформація\n" +
-        "              4.Вихід\n"+
+        "              3.Iнформацiя\n" +
+        "              4.Вихiд\n"+
         "--------------------------------------------"
     };
     
@@ -21,16 +21,15 @@ public class CliServiceImpl : CliService
     {
         "---                                      ---\n" +
         "============= Ласкаво просимо в NetMonitor ============\n" +
-        "                1. Вийти з облікового запису\n" +
-        "                2. Переглянути доступні мережеві пристрої\n" +
-        "                3. Переглянути TcpDump\n" +
-        "                4. Перевірити швидкість мережі\n" +
-        "                5.Довідка\n"+
-        "                5. Вихід\n" +
+        "                1. Переглянути доступнi мережевi пристрої\n" +
+        "                2. Переглянути TcpDump\n" +
+        "                3. Перевiрити швидкість мережi\n" +
+        "                4. Довiдка\n"+
+        "                5. Вихiд\n" +
         "---------------------------------------------------------"
     };
 
-    
+   
     public void initMenu()
     {
         Console.Clear();
@@ -46,7 +45,7 @@ public class CliServiceImpl : CliService
             catch (Exception e)
             {
                 Console.WriteLine($"Непередбачена помилка: {e.Message}");
-                Console.WriteLine("Натисніть Enter для продовження...");
+                Console.WriteLine("Натиснiть Enter для продовження...");
                 Console.ReadLine();
             }
             menuService.handleMenu(programRun);

@@ -31,15 +31,15 @@ public class User
 
         if (string.IsNullOrWhiteSpace(password))
         {
-            errors.Add("Помилка: ви не вірно ввели значення логіну.");
+            errors.Add("Помилка: ви не вiрно ввели значення логіну.");
         }
         if (password.Length < 2 || password.Length > 18)
         {
-            errors.Add("Помилка: розмір логіна повинен бути від 2 до 18 символів.");
+            errors.Add("Помилка: розмiр логiна повинен бути вiд 2 до 18 символів.");
         }
         if (!Regex.IsMatch(password, @"^[a-zA-Z0-9_@!#$%&'*+\-/=?^^{|}~]+$"))
         {
-            errors.Add("Помилка: лише латинські символи, цифри та символи _ або @.");
+            errors.Add("Помилка: лише латинськi символи, цифри та символи _ або @.");
         }
         if (errors.Count > 0)
         {
@@ -58,16 +58,16 @@ public class User
         }
         if (email.Length < 5 || email.Length > 50)
         {
-            errors.Add("Помилка: емейл повинен бути довжиною від 5 до 50 символів.");
+            errors.Add("Помилка: емейл повинен бути довжиною вiд 5 до 50 символів.");
         }
         if (!(email.Contains('@') && email.Contains('.')))
         {
-            errors.Add("Помилка: емейл має містити символи '@' та '.'.");
+            errors.Add("Помилка: емейл має мiстити символи '@' та '.'.");
         }
         var emailParts = email.Split('@');
         if (emailParts.Length != 2 || string.IsNullOrWhiteSpace(emailParts[0]) || string.IsNullOrWhiteSpace(emailParts[1]))
         {
-            errors.Add("Помилка: емейл має бути у форматі 'username@domain'.");
+            errors.Add("Помилка: емейл має бути у форматi 'username@domain'.");
         }
         if (errors.Count > 0)
         {
@@ -86,7 +86,7 @@ public class User
         }
         if (username.Length < 3 || username.Length > 20)
         {
-            errors.Add("Помилка: емейл повинен бути довжиною від 5 до 50 символів.");
+            errors.Add("Помилка: емейл повинен бути довжиною вiд 5 до 50 символiв.");
         }
         return username;
     }
